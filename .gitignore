@@ -13,3 +13,4 @@ doc/api/
 # Artifects from dart2js
 *.js.deps
 *.js.map
+web/out.js.info.json
