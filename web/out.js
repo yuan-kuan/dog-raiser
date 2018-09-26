@@ -658,9 +658,16 @@
       toString$0: ["super$JavaScriptObject$toString", function(receiver) {
         return String(receiver);
       }],
+      get$name: function(obj) {
+        return obj.name;
+      },
+      get$age: function(obj) {
+        return obj.age;
+      },
       get$data: function(obj) {
         return obj.data;
       },
+      $isDog: 1,
       $isMessageEvent: 1
     },
     PlainJavaScriptObject: {
@@ -2670,6 +2677,12 @@
     }
   }], ["dart.dom.web_sql", "dart:web_sql",, P, {
     "^": ""
+  }], ["dogs", "package:excel_worker/dog.dart",, K, {
+    "^": "",
+    Dog: {
+      "^": "JavaScriptObject;",
+      "%": ""
+    }
   }], ["", "excel_reader.dart",, D, {
     "^": "",
     main: function() {
@@ -2683,8 +2696,20 @@
     main_closure: {
       "^": "Closure:6;",
       call$1: [function($event) {
-        P.print("worker : " + H.S(J.get$data$x(H.interceptedTypeCast($event, "$isMessageEvent"))));
-        self.postMessage("dont do it!");
+        var t1, t2, dog, olderDog;
+        H.interceptedTypeCast($event, "$isMessageEvent");
+        t1 = J.getInterceptor$x($event);
+        t2 = t1.get$data($event);
+        P.print("worker before cast " + H.S(self.JSON.stringify(t2)));
+        dog = H.interceptedTypeCast(t1.get$data($event), "$isDog");
+        t1 = J.getInterceptor$x(dog);
+        P.print("worker: got " + H.S(t1.get$name(dog)) + " from master, raising it from " + H.S(t1.get$age(dog)) + "...");
+        t2 = H.S(t1.get$name(dog)) + " 2.0";
+        t1 = t1.get$age(dog);
+        if (typeof t1 !== "number")
+          return t1.$add();
+        olderDog = {age: t1 + 1, name: t2};
+        self.postMessage(olderDog);
       }, null, null, 4, 0, null, 1, "call"]
     }
   }, 1]];
@@ -2753,9 +2778,6 @@
     if (receiver instanceof P.Object)
       return receiver;
     return J.getNativeInterceptor(receiver);
-  };
-  J.get$data$x = function(receiver) {
-    return J.getInterceptor$x(receiver).get$data(receiver);
   };
   J.get$iterator$a = function(receiver) {
     return J.getInterceptor$a(receiver).get$iterator(receiver);

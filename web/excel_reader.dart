@@ -1,5 +1,7 @@
 import 'package:js/js.dart';
 
+import 'package:excel_worker/dog.dart';
+
 @anonymous
 @JS()
 abstract class MessageEvent {
@@ -12,10 +14,18 @@ external void PostMessage(obj);
 @JS('onmessage')
 external void set onMessage(f);
 
+@JS("JSON.stringify")
+external String stringify(obj);
+
 void main() {
   onMessage = allowInterop((event) {
-    print('worker : ${(event as MessageEvent).data}');
-    PostMessage('dont do it!');
+    var e = event as MessageEvent;
+    print('worker before cast ${stringify(e.data)}');
+    var dog = e.data as Dog;
+    print('worker: got ${dog.name} from master, raising it from ${dog.age}...');
+
+    var olderDog = Dog(name : '${dog.name} 2.0', age: dog.age + 1);
+    PostMessage(olderDog);
   });
 }
 
