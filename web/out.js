@@ -490,20 +490,20 @@
           prototype[unmangledName + "*"] = funcs[applyTrampolineIndex];
       }
     }
-    Function.prototype.call$1 = function(a) {
-      return this(a);
-    };
     Function.prototype.call$0 = function() {
       return this();
+    };
+    Function.prototype.call$1 = function(a) {
+      return this(a);
     };
     Function.prototype.call$2 = function(a, b) {
       return this(a, b);
     };
-    Function.prototype.call$3 = function(a, b, c) {
-      return this(a, b, c);
-    };
     Function.prototype.call$1$1 = function(a) {
       return this(a);
+    };
+    Function.prototype.call$3 = function(a, b, c) {
+      return this(a, b, c);
     };
     Function.prototype.call$4 = function(a, b, c, d) {
       return this(a, b, c, d);
@@ -740,7 +740,7 @@
       "^": "JSArray;$ti"
     },
     ArrayIterator: {
-      "^": "Object;_iterable,_length,_index,0_current,$ti",
+      "^": "Object;_iterable,__interceptors$_length,_index,0_current,$ti",
       get$current: function() {
         return this._current;
       },
@@ -748,7 +748,7 @@
         var t1, $length, t2;
         t1 = this._iterable;
         $length = t1.length;
-        if (this._length !== $length)
+        if (this.__interceptors$_length !== $length)
           throw H.wrapException(H.throwConcurrentModificationError(t1));
         t2 = this._index;
         if (t2 >= $length) {
@@ -770,6 +770,20 @@
       },
       get$hashCode: function(receiver) {
         return receiver & 0x1FFFFFFF;
+      },
+      _tdivFast$1: function(receiver, other) {
+        return (receiver | 0) === receiver ? receiver / other | 0 : this._tdivSlow$1(receiver, other);
+      },
+      _tdivSlow$1: function(receiver, other) {
+        var quotient = receiver / other;
+        if (quotient >= -2147483648 && quotient <= 2147483647)
+          return quotient | 0;
+        if (quotient > 0) {
+          if (quotient !== 1 / 0)
+            return Math.floor(quotient);
+        } else if (quotient > -1 / 0)
+          return Math.ceil(quotient);
+        throw H.wrapException(P.UnsupportedError$("Result of truncating division is " + H.S(quotient) + ": " + H.S(receiver) + " ~/ " + other));
       },
       _shrOtherPositive$1: function(receiver, other) {
         var t1;
@@ -1020,7 +1034,7 @@
         C.JSArray_methods.addAll$1($arguments, positionalArguments);
       }
       t1.names = "";
-      if (namedArguments != null && namedArguments.__js_helper$_length !== 0)
+      if (namedArguments != null && namedArguments._length !== 0)
         namedArguments.forEach$1(0, new H.Primitives_functionNoSuchMethod_closure(t1, namedArgumentList, $arguments));
       return J.noSuchMethod$1$($function, new H.JSInvocationMirror(C.Symbol_call, "call" + "$" + t1.argumentCount + t1.names, 0, $arguments, namedArgumentList, 0));
     },
@@ -2134,9 +2148,9 @@
       $isMap: 1
     },
     ConstantStringMap: {
-      "^": "ConstantMap;__js_helper$_length,_jsObject,_keys,$ti",
+      "^": "ConstantMap;_length,_jsObject,_keys,$ti",
       get$length: function(_) {
-        return this.__js_helper$_length;
+        return this._length;
       },
       _fetch$1: function(key) {
         return this._jsObject[H.stringTypeCheck(key)];
@@ -2153,7 +2167,7 @@
       }
     },
     JSInvocationMirror: {
-      "^": "Object;__js_helper$_memberName,_internalName,_kind,0_typeArguments,_arguments,_namedArgumentNames,_typeArgumentCount,0_namedIndices",
+      "^": "Object;__js_helper$_memberName,_internalName,_kind,0_typeArguments,__js_helper$_arguments,_namedArgumentNames,_typeArgumentCount,0_namedIndices",
       get$memberName: function() {
         var t1 = this.__js_helper$_memberName;
         return t1;
@@ -2162,7 +2176,7 @@
         var t1, argumentCount, list, index;
         if (this._kind === 1)
           return C.List_empty;
-        t1 = this._arguments;
+        t1 = this.__js_helper$_arguments;
         argumentCount = t1.length - this._namedArgumentNames.length - this._typeArgumentCount;
         if (argumentCount === 0)
           return C.List_empty;
@@ -2182,7 +2196,7 @@
           return C.Map_empty;
         t1 = this._namedArgumentNames;
         namedArgumentCount = t1.length;
-        t2 = this._arguments;
+        t2 = this.__js_helper$_arguments;
         namedArgumentsStartIndex = t2.length - namedArgumentCount - this._typeArgumentCount;
         if (namedArgumentCount === 0)
           return C.Map_empty;
@@ -2237,14 +2251,14 @@
       }
     },
     TypeErrorDecoder: {
-      "^": "Object;_pattern,_arguments,_argumentsExpr,_expr,_method,_receiver",
+      "^": "Object;_pattern,__js_helper$_arguments,_argumentsExpr,_expr,_method,_receiver",
       matchTypeError$1: function(message) {
         var match, result, t1;
         match = new RegExp(this._pattern).exec(message);
         if (match == null)
           return;
         result = Object.create(null);
-        t1 = this._arguments;
+        t1 = this.__js_helper$_arguments;
         if (t1 !== -1)
           result.arguments = match[t1 + 1];
         t1 = this._argumentsExpr;
@@ -2339,7 +2353,7 @@
       }
     },
     unwrapException_saveStackTrace: {
-      "^": "Closure:4;ex",
+      "^": "Closure:5;ex",
       call$1: function(error) {
         if (!!J.getInterceptor(error).$isError)
           if (error.$thrownJsError == null)
@@ -2466,9 +2480,9 @@
       }
     },
     JsLinkedHashMap: {
-      "^": "MapBase;__js_helper$_length,0_strings,0_nums,0_rest,0_first,0_last,_modifications,$ti",
+      "^": "MapBase;_length,0_strings,0_nums,0_rest,0_first,0_last,_modifications,$ti",
       get$length: function(_) {
-        return this.__js_helper$_length;
+        return this._length;
       },
       $indexSet: function(_, key, value) {
         var strings, nums, rest, hash, bucket, index;
@@ -2516,7 +2530,7 @@
           action.call$2(cell.hashMapCellKey, cell.hashMapCellValue);
           if (modifications !== this._modifications)
             throw H.wrapException(P.ConcurrentModificationError$(this));
-          cell = cell._next;
+          cell = cell.__js_helper$_next;
         }
       },
       _addHashTableEntry$3: function(table, key, value) {
@@ -2537,11 +2551,11 @@
           this._first = cell;
         } else {
           last = this._last;
-          cell._previous = last;
-          last._next = cell;
+          cell.__js_helper$_previous = last;
+          last.__js_helper$_next = cell;
           this._last = cell;
         }
-        ++this.__js_helper$_length;
+        ++this._length;
         this._modifications = this._modifications + 1 & 67108863;
         return cell;
       },
@@ -2578,10 +2592,10 @@
       }
     },
     LinkedHashMapCell: {
-      "^": "Object;hashMapCellKey,hashMapCellValue,0_next,0_previous"
+      "^": "Object;hashMapCellKey,hashMapCellValue,0__js_helper$_next,0__js_helper$_previous"
     },
     initHooks_closure: {
-      "^": "Closure:4;getTag",
+      "^": "Closure:5;getTag",
       call$1: function(o) {
         return this.getTag(o);
       }
@@ -2784,14 +2798,19 @@
     },
     _AsyncRun__scheduleImmediateJsOverride: [function(callback) {
       self.scheduleImmediate(H.convertDartClosureToJS(new P._AsyncRun__scheduleImmediateJsOverride_internalCallback(H.functionTypeCheck(callback, {func: 1, ret: -1})), 0));
-    }, "call$1", "async__AsyncRun__scheduleImmediateJsOverride$closure", 4, 0, 3],
+    }, "call$1", "async__AsyncRun__scheduleImmediateJsOverride$closure", 4, 0, 4],
     _AsyncRun__scheduleImmediateWithSetImmediate: [function(callback) {
       self.setImmediate(H.convertDartClosureToJS(new P._AsyncRun__scheduleImmediateWithSetImmediate_internalCallback(H.functionTypeCheck(callback, {func: 1, ret: -1})), 0));
-    }, "call$1", "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", 4, 0, 3],
+    }, "call$1", "async__AsyncRun__scheduleImmediateWithSetImmediate$closure", 4, 0, 4],
     _AsyncRun__scheduleImmediateWithTimer: [function(callback) {
+      P.Timer__createTimer(C.Duration_0, H.functionTypeCheck(callback, {func: 1, ret: -1}));
+    }, "call$1", "async__AsyncRun__scheduleImmediateWithTimer$closure", 4, 0, 4],
+    Timer__createTimer: function(duration, callback) {
+      var milliseconds;
       H.functionTypeCheck(callback, {func: 1, ret: -1});
-      P._TimerImpl$(0, callback);
-    }, "call$1", "async__AsyncRun__scheduleImmediateWithTimer$closure", 4, 0, 3],
+      milliseconds = C.JSInt_methods._tdivFast$1(duration._duration, 1000);
+      return P._TimerImpl$(milliseconds < 0 ? 0 : milliseconds, callback);
+    },
     _registerErrorHandler: function(errorHandler, zone) {
       if (H.functionTypeTest(errorHandler, {func: 1, args: [P.Object, P.StackTrace]}))
         return zone.registerBinaryCallback$3$1(errorHandler, null, P.Object, P.StackTrace);
@@ -2873,15 +2892,17 @@
     _runGuarded: function(notificationHandler) {
       return;
     },
-    _nullErrorHandler: [function(error, stackTrace) {
-      var t1 = $.Zone__current;
-      t1.toString;
-      P._rootHandleUncaughtError(null, null, t1, error, stackTrace);
-    }, function(error) {
-      return P._nullErrorHandler(error, null);
-    }, "call$2", "call$1", "async___nullErrorHandler$closure", 4, 2, 6],
-    _nullDoneHandler: [function() {
-    }, "call$0", "async___nullDoneHandler$closure", 0, 0, 1],
+    Timer_Timer: function(duration, callback) {
+      var t1, t2;
+      t1 = {func: 1, ret: -1};
+      H.functionTypeCheck(callback, t1);
+      t2 = $.Zone__current;
+      if (t2 === C.C__RootZone) {
+        t2.toString;
+        return P.Timer__createTimer(duration, callback);
+      }
+      return P.Timer__createTimer(duration, H.functionTypeCheck(t2.bindCallbackGuarded$1(callback), t1));
+    },
     _rootHandleUncaughtError: function($self, $parent, zone, error, stackTrace) {
       var t1 = {};
       t1.error = error;
@@ -2950,7 +2971,7 @@
       P._scheduleAsyncCallback(f);
     },
     _AsyncRun__initializeScheduleImmediate_internalCallback: {
-      "^": "Closure:5;_box_0",
+      "^": "Closure:2;_box_0",
       call$1: [function(_) {
         var t1, f;
         t1 = this._box_0;
@@ -3010,41 +3031,16 @@
       "^": "_ControllerStream;_controller,$ti"
     },
     _BroadcastSubscription: {
-      "^": "_ControllerSubscription;_eventState,0_async$_next,0_async$_previous,_controller,0_onData,0_onError,0_onDone,_zone,_state,0_cancelFuture,0_pending,$ti",
-      _onPause$0: function() {
-      },
-      _onResume$0: function() {
-      }
+      "^": "_ControllerSubscription;_eventState,0_next,0_previous,_controller,0_onData,0_onError,0_onDone,_zone,_state,0_cancelFuture,0_pending,$ti"
     },
     _BroadcastStreamController: {
       "^": "Object;_state<,$ti",
-      get$_mayAddEvent: function() {
-        return this._state < 4;
-      },
-      _removeListener$1: function(subscription) {
-        var previous, next;
-        H.assertSubtype(subscription, "$is_BroadcastSubscription", this.$ti, "$as_BroadcastSubscription");
-        previous = subscription._async$_previous;
-        next = subscription._async$_next;
-        if (previous == null)
-          this._firstSubscription = next;
-        else
-          previous._async$_next = next;
-        if (next == null)
-          this._lastSubscription = previous;
-        else
-          next._async$_previous = previous;
-        subscription._async$_previous = subscription;
-        subscription._async$_next = subscription;
-      },
       _subscribe$4: function(onData, onError, onDone, cancelOnError) {
         var t1, t2, t3, t4, subscription, oldLast;
         t1 = H.getTypeArgumentByIndex(this, 0);
         H.functionTypeCheck(onData, {func: 1, ret: -1, args: [t1]});
         H.functionTypeCheck(onDone, {func: 1, ret: -1});
         if ((this._state & 4) !== 0) {
-          if (onDone == null)
-            onDone = P.async___nullDoneHandler$closure();
           t1 = new P._DoneStreamSubscription($.Zone__current, 0, onDone, this.$ti);
           t1._schedule$0();
           return t1;
@@ -3054,98 +3050,25 @@
         t4 = this.$ti;
         subscription = new P._BroadcastSubscription(0, this, t2, t3, t4);
         subscription._BufferingStreamSubscription$4(onData, onError, onDone, cancelOnError, t1);
-        subscription._async$_previous = subscription;
-        subscription._async$_next = subscription;
+        subscription._previous = subscription;
+        subscription._next = subscription;
         H.assertSubtype(subscription, "$is_BroadcastSubscription", t4, "$as_BroadcastSubscription");
         subscription._eventState = this._state & 1;
         oldLast = this._lastSubscription;
         this._lastSubscription = subscription;
-        subscription._async$_next = null;
-        subscription._async$_previous = oldLast;
+        subscription._next = null;
+        subscription._previous = oldLast;
         if (oldLast == null)
           this._firstSubscription = subscription;
         else
-          oldLast._async$_next = subscription;
+          oldLast._next = subscription;
         if (this._firstSubscription === subscription)
           P._runGuarded(this.onListen);
         return subscription;
-      },
-      _addEventError$0: ["super$_BroadcastStreamController$_addEventError", function() {
-        if ((this._state & 4) !== 0)
-          return new P.StateError("Cannot add new events after calling close");
-        return new P.StateError("Cannot add new events while doing an addStream");
-      }],
-      _forEachListener$1: function(action) {
-        var t1, subscription, id, next;
-        H.functionTypeCheck(action, {func: 1, ret: -1, args: [[P._BufferingStreamSubscription, H.getTypeArgumentByIndex(this, 0)]]});
-        t1 = this._state;
-        if ((t1 & 2) !== 0)
-          throw H.wrapException(P.StateError$("Cannot fire new event. Controller is already firing an event"));
-        subscription = this._firstSubscription;
-        if (subscription == null)
-          return;
-        id = t1 & 1;
-        this._state = t1 ^ 3;
-        for (; subscription != null;) {
-          t1 = subscription._eventState;
-          if ((t1 & 1) === id) {
-            subscription._eventState = t1 | 2;
-            action.call$1(subscription);
-            t1 = subscription._eventState ^= 1;
-            next = subscription._async$_next;
-            if ((t1 & 4) !== 0)
-              this._removeListener$1(subscription);
-            subscription._eventState &= 4294967293;
-            subscription = next;
-          } else
-            subscription = subscription._async$_next;
-        }
-        this._state &= 4294967293;
-        if (this._firstSubscription == null)
-          this._callOnCancel$0();
-      },
-      _callOnCancel$0: function() {
-        if ((this._state & 4) !== 0 && this._doneFuture.get$_mayComplete())
-          this._doneFuture._asyncComplete$1(null);
-        P._runGuarded(this.onCancel);
-      },
-      $is_EventDispatch: 1
+      }
     },
     _SyncBroadcastStreamController: {
-      "^": "_BroadcastStreamController;onListen,onCancel,_state,0_firstSubscription,0_lastSubscription,0_addStreamState,0_doneFuture,$ti",
-      get$_mayAddEvent: function() {
-        return P._BroadcastStreamController.prototype.get$_mayAddEvent.call(this) && (this._state & 2) === 0;
-      },
-      _addEventError$0: function() {
-        if ((this._state & 2) !== 0)
-          return new P.StateError("Cannot fire new event. Controller is already firing an event");
-        return this.super$_BroadcastStreamController$_addEventError();
-      },
-      _sendData$1: function(data) {
-        var t1;
-        H.assertSubtypeOfRuntimeType(data, H.getTypeArgumentByIndex(this, 0));
-        t1 = this._firstSubscription;
-        if (t1 == null)
-          return;
-        if (t1 === this._lastSubscription) {
-          this._state |= 2;
-          t1._add$1(data);
-          this._state &= 4294967293;
-          if (this._firstSubscription == null)
-            this._callOnCancel$0();
-          return;
-        }
-        this._forEachListener$1(new P._SyncBroadcastStreamController__sendData_closure(this, data));
-      }
-    },
-    _SyncBroadcastStreamController__sendData_closure: {
-      "^": "Closure;$this,data",
-      call$1: function(subscription) {
-        H.assertSubtype(subscription, "$is_BufferingStreamSubscription", [H.getTypeArgumentByIndex(this.$this, 0)], "$as_BufferingStreamSubscription")._add$1(this.data);
-      },
-      $signature: function() {
-        return {func: 1, ret: P.Null, args: [[P._BufferingStreamSubscription, H.getTypeArgumentByIndex(this.$this, 0)]]};
-      }
+      "^": "_BroadcastStreamController;onListen,onCancel,_state,0_firstSubscription,0_lastSubscription,0_addStreamState,0_doneFuture,$ti"
     },
     _Completer: {
       "^": "Object;$ti"
@@ -3290,7 +3213,7 @@
         P._Future__propagateToListeners(this, listeners);
       }, function(error) {
         return this._completeError$2(error, null);
-      }, "_completeError$1", "call$2", "call$1", "get$_completeError", 4, 2, 6, 1, 2, 3],
+      }, "_completeError$1", "call$2", "call$1", "get$_completeError", 4, 2, 11, 1, 2, 3],
       _asyncComplete$1: function(value) {
         var t1;
         H.futureOrCheck(value, {futureOr: 1, type: H.getTypeArgumentByIndex(this, 0)});
@@ -3475,7 +3398,7 @@
       }
     },
     _Future__chainForeignFuture_closure: {
-      "^": "Closure:5;target",
+      "^": "Closure:2;target",
       call$1: function(value) {
         var t1 = this.target;
         t1._state = 0;
@@ -3483,7 +3406,7 @@
       }
     },
     _Future__chainForeignFuture_closure0: {
-      "^": "Closure:11;target",
+      "^": "Closure:12;target",
       call$2: [function(error, stackTrace) {
         this.target._completeError$2(error, H.interceptedTypeCheck(stackTrace, "$isStackTrace"));
       }, function(error) {
@@ -3563,7 +3486,7 @@
       }
     },
     _Future__propagateToListeners_handleWhenCompleteCallback_closure: {
-      "^": "Closure:12;originalSource",
+      "^": "Closure:13;originalSource",
       call$1: function(_) {
         return this.originalSource;
       }
@@ -3661,124 +3584,27 @@
       }
     },
     _ControllerSubscription: {
-      "^": "_BufferingStreamSubscription;$ti",
-      _onPause$0: function() {
-        H.assertSubtype(this, "$isStreamSubscription", [H.getTypeArgumentByIndex(this._controller, 0)], "$asStreamSubscription");
-      },
-      _onResume$0: function() {
-        H.assertSubtype(this, "$isStreamSubscription", [H.getTypeArgumentByIndex(this._controller, 0)], "$asStreamSubscription");
-      }
+      "^": "_BufferingStreamSubscription;$ti"
     },
     _BufferingStreamSubscription: {
       "^": "Object;_state<,$ti",
       _BufferingStreamSubscription$4: function(onData, onError, onDone, cancelOnError, $T) {
-        var t1, t2, handleError, handleDone;
+        var t1, t2;
         t1 = H.getRuntimeTypeArgument(this, "_BufferingStreamSubscription", 0);
         H.functionTypeCheck(onData, {func: 1, ret: -1, args: [t1]});
         t2 = this._zone;
         t2.toString;
         this._onData = H.functionTypeCheck(onData, {func: 1, ret: null, args: [t1]});
-        handleError = onError == null ? P.async___nullErrorHandler$closure() : onError;
-        if (H.functionTypeTest(handleError, {func: 1, ret: -1, args: [P.Object, P.StackTrace]}))
-          this._onError = t2.registerBinaryCallback$3$1(handleError, null, P.Object, P.StackTrace);
-        else if (H.functionTypeTest(handleError, {func: 1, ret: -1, args: [P.Object]}))
-          this._onError = H.functionTypeCheck(handleError, {func: 1, ret: null, args: [P.Object]});
+        if (H.functionTypeTest(onError, {func: 1, ret: -1, args: [P.Object, P.StackTrace]}))
+          this._onError = t2.registerBinaryCallback$3$1(onError, null, P.Object, P.StackTrace);
+        else if (H.functionTypeTest(onError, {func: 1, ret: -1, args: [P.Object]}))
+          this._onError = H.functionTypeCheck(onError, {func: 1, ret: null, args: [P.Object]});
         else
           H.throwExpression(P.ArgumentError$("handleError callback must take either an Object (the error), or both an Object (the error) and a StackTrace."));
         H.functionTypeCheck(onDone, {func: 1, ret: -1});
-        handleDone = onDone == null ? P.async___nullDoneHandler$closure() : onDone;
-        this._onDone = H.functionTypeCheck(handleDone, {func: 1, ret: -1});
+        this._onDone = H.functionTypeCheck(onDone, {func: 1, ret: -1});
       },
-      _add$1: function(data) {
-        var t1, t2;
-        t1 = H.getRuntimeTypeArgument(this, "_BufferingStreamSubscription", 0);
-        H.assertSubtypeOfRuntimeType(data, t1);
-        t2 = this._state;
-        if ((t2 & 8) !== 0)
-          return;
-        if (t2 < 32)
-          this._sendData$1(data);
-        else
-          this._addPending$1(new P._DelayedData(data, [t1]));
-      },
-      _onPause$0: function() {
-      },
-      _onResume$0: function() {
-      },
-      _addPending$1: function($event) {
-        var t1, pending;
-        t1 = [H.getRuntimeTypeArgument(this, "_BufferingStreamSubscription", 0)];
-        pending = H.assertSubtype(this._pending, "$is_StreamImplEvents", t1, "$as_StreamImplEvents");
-        if (pending == null) {
-          pending = new P._StreamImplEvents(0, t1);
-          this._pending = pending;
-        }
-        t1 = pending.lastPendingEvent;
-        if (t1 == null) {
-          pending.lastPendingEvent = $event;
-          pending.firstPendingEvent = $event;
-        } else {
-          t1.set$next($event);
-          pending.lastPendingEvent = $event;
-        }
-        t1 = this._state;
-        if ((t1 & 64) === 0) {
-          t1 = (t1 | 64) >>> 0;
-          this._state = t1;
-          if (t1 < 128)
-            this._pending.schedule$1(this);
-        }
-      },
-      _sendData$1: function(data) {
-        var t1, t2;
-        t1 = H.getRuntimeTypeArgument(this, "_BufferingStreamSubscription", 0);
-        H.assertSubtypeOfRuntimeType(data, t1);
-        t2 = this._state;
-        this._state = (t2 | 32) >>> 0;
-        this._zone.runUnaryGuarded$1$2(this._onData, data, t1);
-        this._state = (this._state & 4294967263) >>> 0;
-        this._checkState$1((t2 & 4) !== 0);
-      },
-      _checkState$1: function(wasInputPaused) {
-        var t1, t2, isInputPaused;
-        t1 = this._state;
-        if ((t1 & 64) !== 0 && this._pending.lastPendingEvent == null) {
-          t1 = (t1 & 4294967231) >>> 0;
-          this._state = t1;
-          if ((t1 & 4) !== 0)
-            if (t1 < 128) {
-              t2 = this._pending;
-              t2 = t2 == null || t2.lastPendingEvent == null;
-            } else
-              t2 = false;
-          else
-            t2 = false;
-          if (t2) {
-            t1 = (t1 & 4294967291) >>> 0;
-            this._state = t1;
-          }
-        }
-        for (; true; wasInputPaused = isInputPaused) {
-          if ((t1 & 8) !== 0) {
-            this._pending = null;
-            return;
-          }
-          isInputPaused = (t1 & 4) !== 0;
-          if (wasInputPaused === isInputPaused)
-            break;
-          this._state = (t1 ^ 32) >>> 0;
-          if (isInputPaused)
-            this._onPause$0();
-          else
-            this._onResume$0();
-          t1 = (this._state & 4294967263) >>> 0;
-          this._state = t1;
-        }
-        if ((t1 & 64) !== 0 && t1 < 128)
-          this._pending.schedule$1(this);
-      },
-      $isStreamSubscription: 1,
-      $is_EventDispatch: 1
+      $isStreamSubscription: 1
     },
     _StreamImpl: {
       "^": "Stream;$ti",
@@ -3786,56 +3612,7 @@
         H.functionTypeCheck(onData, {func: 1, ret: -1, args: [H.getTypeArgumentByIndex(this, 0)]});
         H.functionTypeCheck(onDone, {func: 1, ret: -1});
         return this._controller._subscribe$4(H.functionTypeCheck(onData, {func: 1, ret: -1, args: [H.getTypeArgumentByIndex(this, 0)]}), onError, onDone, true === cancelOnError);
-      },
-      listen$1: function(onData) {
-        return this.listen$4$cancelOnError$onDone$onError(onData, null, null, null);
       }
-    },
-    _DelayedEvent: {
-      "^": "Object;0next@,$ti"
-    },
-    _DelayedData: {
-      "^": "_DelayedEvent;value,0next,$ti",
-      perform$1: function(dispatch) {
-        H.assertSubtype(dispatch, "$is_EventDispatch", this.$ti, "$as_EventDispatch")._sendData$1(this.value);
-      }
-    },
-    _PendingEvents: {
-      "^": "Object;_state<,$ti",
-      schedule$1: function(dispatch) {
-        var t1;
-        H.assertSubtype(dispatch, "$is_EventDispatch", this.$ti, "$as_EventDispatch");
-        t1 = this._state;
-        if (t1 === 1)
-          return;
-        if (t1 >= 1) {
-          this._state = 1;
-          return;
-        }
-        P.scheduleMicrotask(new P._PendingEvents_schedule_closure(this, dispatch));
-        this._state = 1;
-      }
-    },
-    _PendingEvents_schedule_closure: {
-      "^": "Closure:0;$this,dispatch",
-      call$0: function() {
-        var t1, oldState, t2, $event, t3;
-        t1 = this.$this;
-        oldState = t1._state;
-        t1._state = 0;
-        if (oldState === 3)
-          return;
-        t2 = H.assertSubtype(this.dispatch, "$is_EventDispatch", [H.getTypeArgumentByIndex(t1, 0)], "$as_EventDispatch");
-        $event = t1.firstPendingEvent;
-        t3 = $event.get$next();
-        t1.firstPendingEvent = t3;
-        if (t3 == null)
-          t1.lastPendingEvent = null;
-        $event.perform$1(t2);
-      }
-    },
-    _StreamImplEvents: {
-      "^": "_PendingEvents;0firstPendingEvent,0lastPendingEvent,_state,$ti"
     },
     _DoneStreamSubscription: {
       "^": "Object;_zone,_state<,_onDone,$ti",
@@ -3899,22 +3676,6 @@
             return;
           }
           P._rootRun(null, null, this, f, -1);
-        } catch (exception) {
-          e = H.unwrapException(exception);
-          s = H.getTraceFromException(exception);
-          P._rootHandleUncaughtError(null, null, this, e, H.interceptedTypeCheck(s, "$isStackTrace"));
-        }
-      },
-      runUnaryGuarded$1$2: function(f, arg, $T) {
-        var e, s, exception;
-        H.functionTypeCheck(f, {func: 1, ret: -1, args: [$T]});
-        H.assertSubtypeOfRuntimeType(arg, $T);
-        try {
-          if (C.C__RootZone === $.Zone__current) {
-            f.call$1(arg);
-            return;
-          }
-          P._rootRunUnary(null, null, this, f, arg, -1, $T);
         } catch (exception) {
           e = H.unwrapException(exception);
           s = H.getTraceFromException(exception);
@@ -4038,7 +3799,7 @@
       "^": "MapMixin;"
     },
     MapBase_mapToString_closure: {
-      "^": "Closure:13;_box_0,result",
+      "^": "Closure:14;_box_0,result",
       call$2: function(k, v) {
         var t1, t2;
         t1 = this._box_0;
@@ -4054,7 +3815,7 @@
     MapMixin: {
       "^": "Object;$ti",
       get$length: function(_) {
-        return this.__js_helper$_length;
+        return this._length;
       },
       toString$0: function(_) {
         return P.MapBase_mapToString(this);
@@ -4070,7 +3831,7 @@
         this._map.forEach$1(0, H.functionTypeCheck(action, {func: 1, ret: -1, args: [H.getTypeArgumentByIndex(this, 0), H.getTypeArgumentByIndex(this, 1)]}));
       },
       get$length: function(_) {
-        return this._map.__js_helper$_length;
+        return this._map._length;
       },
       toString$0: function(_) {
         return P.MapBase_mapToString(this._map);
@@ -4106,10 +3867,10 @@
       return P.Error__objectToString(object);
     },
     print: function(object) {
-      H.printString(object);
+      H.printString(H.S(object));
     },
     NoSuchMethodError_toString_closure: {
-      "^": "Closure:14;_box_0,sb",
+      "^": "Closure:15;_box_0,sb",
       call$2: function(key, value) {
         var t1, t2, t3;
         H.interceptedTypeCheck(key, "$isSymbol0");
@@ -4185,6 +3946,57 @@
       "^": "num;"
     },
     "+double": 0,
+    Duration: {
+      "^": "Object;_duration",
+      $lt: function(_, other) {
+        return C.JSInt_methods.$lt(this._duration, H.interceptedTypeCheck(other, "$isDuration")._duration);
+      },
+      $eq: function(_, other) {
+        if (other == null)
+          return false;
+        if (!(other instanceof P.Duration))
+          return false;
+        return this._duration === other._duration;
+      },
+      get$hashCode: function(_) {
+        return this._duration & 0x1FFFFFFF;
+      },
+      toString$0: function(_) {
+        var t1, t2, twoDigitMinutes, twoDigitSeconds, sixDigitUs;
+        t1 = new P.Duration_toString_twoDigits();
+        t2 = this._duration;
+        if (t2 < 0)
+          return "-" + new P.Duration(0 - t2).toString$0(0);
+        twoDigitMinutes = t1.call$1(C.JSInt_methods._tdivFast$1(t2, 60000000) % 60);
+        twoDigitSeconds = t1.call$1(C.JSInt_methods._tdivFast$1(t2, 1000000) % 60);
+        sixDigitUs = new P.Duration_toString_sixDigits().call$1(t2 % 1000000);
+        return "" + C.JSInt_methods._tdivFast$1(t2, 3600000000) + ":" + H.S(twoDigitMinutes) + ":" + H.S(twoDigitSeconds) + "." + H.S(sixDigitUs);
+      }
+    },
+    Duration_toString_sixDigits: {
+      "^": "Closure:6;",
+      call$1: function(n) {
+        if (n >= 100000)
+          return "" + n;
+        if (n >= 10000)
+          return "0" + n;
+        if (n >= 1000)
+          return "00" + n;
+        if (n >= 100)
+          return "000" + n;
+        if (n >= 10)
+          return "0000" + n;
+        return "00000" + n;
+      }
+    },
+    Duration_toString_twoDigits: {
+      "^": "Closure:6;",
+      call$1: function(n) {
+        if (n >= 10)
+          return "" + n;
+        return "0" + n;
+      }
+    },
     Error: {
       "^": "Object;"
     },
@@ -4273,13 +4085,13 @@
       }
     },
     NoSuchMethodError: {
-      "^": "Error;_core$_receiver,_memberName,_core$_arguments,_namedArguments,_existingArgumentNames",
+      "^": "Error;_core$_receiver,_memberName,_arguments,_namedArguments,_existingArgumentNames",
       toString$0: function(_) {
         var _box_0, sb, t1, t2, _i, t3, t4, argument, memberName, receiverText, actualParameters;
         _box_0 = {};
         sb = new P.StringBuffer("");
         _box_0.comma = "";
-        t1 = this._core$_arguments;
+        t1 = this._arguments;
         if (t1 != null)
           for (t2 = t1.length, _i = 0, t3 = "", t4 = ""; _i < t2; ++_i, t4 = ", ") {
             argument = t1[_i];
@@ -4563,7 +4375,7 @@
       }
     },
     _AcceptStructuredClone_walk_closure: {
-      "^": "Closure:15;_box_0,$this",
+      "^": "Closure:16;_box_0,$this",
       call$2: function(key, value) {
         var t1, t2;
         t1 = this._box_0.copy;
@@ -4584,7 +4396,7 @@
       }
     },
     convertNativePromiseToDartFuture_closure: {
-      "^": "Closure:2;completer",
+      "^": "Closure:3;completer",
       call$1: [function(result) {
         var t1 = this.completer;
         H.futureOrCheck(result, {futureOr: 1, type: H.getTypeArgumentByIndex(t1, 0)});
@@ -4596,7 +4408,7 @@
       }, null, null, 4, 0, null, 4, "call"]
     },
     convertNativePromiseToDartFuture_closure0: {
-      "^": "Closure:2;completer",
+      "^": "Closure:3;completer",
       call$1: [function(result) {
         var error, t1;
         error = result == null ? new P.NullThrownError() : result;
@@ -4632,7 +4444,7 @@
       H.interceptedTypeCheck(callback, "$isFunction");
       t1 = H.Primitives_applyFunctionWithPositionalArguments(callback, $arguments);
       return t1;
-    }, null, null, 8, 0, null, 14, 15],
+    }, null, null, 8, 0, null, 13, 14],
     allowInterop: function(f, $F) {
       H.assertIsSubtype($F, P.Function, "The type argument '", "' is not a subtype of the type variable bound '", "' of type variable 'F' in 'allowInterop'.");
       H.assertSubtypeOfRuntimeType(f, $F);
@@ -4649,50 +4461,30 @@
     "^": ""
   }], ["", "excel_reader.dart",, D, {
     "^": "",
-    callbackToStream: function(object, $name, unwrapValue, $J, $T) {
-      var controller;
-      H.functionTypeCheck(unwrapValue, {func: 1, ret: $T, args: [$J]});
-      controller = new P._SyncBroadcastStreamController(null, null, 0, [$T]);
-      object[$name] = P.allowInterop(new D.callbackToStream_closure(controller, unwrapValue, $J), {func: 1, ret: P.Null, args: [$J]});
-      return new P._BroadcastStream(controller, [$T]);
-    },
     PostMessage: [function(obj) {
       return postMessage(obj);
-    }, "call$1", "excel_reader__PostMessage$closure", 4, 0, 2],
+    }, "call$1", "excel_reader__PostMessage$closure", 4, 0, 3],
     main: function() {
       P.print("excel reading hard at work " + H.S(self.self) + " and " + H.S(D.excel_reader__PostMessage$closure()));
-      D.callbackToStream(self.self, "onmessage", new D.main_closure(), null, W.MessageEvent).listen$1(new D.main_closure0());
-    },
-    callbackToStream_closure: {
-      "^": "Closure;controller,unwrapValue,J",
-      call$1: [function($event) {
-        var t1, t2;
-        t1 = this.controller;
-        t2 = H.assertSubtypeOfRuntimeType(this.unwrapValue.call$1(H.assertSubtypeOfRuntimeType($event, this.J)), H.getTypeArgumentByIndex(t1, 0));
-        if (!t1.get$_mayAddEvent())
-          H.throwExpression(t1._addEventError$0());
-        t1._sendData$1(t2);
-      }, null, null, 4, 0, null, 12, "call"],
-      $signature: function() {
-        return {func: 1, ret: P.Null, args: [this.J]};
-      }
+      P.print(new P._BroadcastStream(new P._SyncBroadcastStreamController(null, null, 0, [null]), [null]));
+      P.Timer_Timer(C.Duration_1000000, new D.main_closure());
     },
     DedicatedWorkerGlobalScope: {
       "^": "JavaScriptObject;",
       "%": ""
     },
     main_closure: {
-      "^": "Closure:16;",
-      call$1: function(j) {
-        return H.interceptedTypeCast(j, "$isMessageEvent");
+      "^": "Closure:0;",
+      call$0: function() {
+        self.self.onmessage = P.allowInterop(new D.main__closure(), {func: 1, ret: P.Null, args: [,]});
       }
     },
-    main_closure0: {
-      "^": "Closure:17;",
-      call$1: [function(e) {
-        P.print("util done it? " + H.S(new P._AcceptStructuredCloneDart2Js([], [], false).convertNativeToDart_AcceptStructuredClone$2$mustCopy(H.interceptedTypeCheck(e, "$isMessageEvent").data, true)));
-        self.postMessage("working on it");
-      }, null, null, 4, 0, null, 13, "call"]
+    main__closure: {
+      "^": "Closure:2;",
+      call$1: [function($event) {
+        P.print("controller : data? " + H.S(new P._AcceptStructuredCloneDart2Js([], [], false).convertNativeToDart_AcceptStructuredClone$2$mustCopy(H.interceptedTypeCast($event, "$isMessageEvent").data, true)));
+        self.postMessage("dont do it!");
+      }, null, null, 4, 0, null, 12, "call"]
     }
   }, 1]];
   setupProgram(dart, 0, 0);
@@ -4806,6 +4598,8 @@
   C.PlainJavaScriptObject_methods = J.PlainJavaScriptObject.prototype;
   C.UnknownJavaScriptObject_methods = J.UnknownJavaScriptObject.prototype;
   C.C__RootZone = new P._RootZone();
+  C.Duration_0 = new P.Duration(0);
+  C.Duration_1000000 = new P.Duration(1000000);
   C.JS_CONST_0 = function(hooks) {
   if (typeof dartExperimentalFixupGetTag != "function") return hooks;
   hooks.getTag = dartExperimentalFixupGetTag(hooks.getTag);
@@ -5037,8 +4831,8 @@
   }, "_toStringVisiting"]);
   Isolate = Isolate.$finishIsolateConstructor(Isolate);
   $ = new Isolate();
-  init.metadata = ["_", null, "error", "stackTrace", "result", "index", "closure", "numberOfArguments", "arg1", "arg2", "arg3", "arg4", "event", "e", "callback", "arguments"];
-  init.types = [{func: 1, ret: P.Null}, {func: 1, ret: -1}, {func: 1, ret: -1, args: [,]}, {func: 1, ret: -1, args: [{func: 1, ret: -1}]}, {func: 1, args: [,]}, {func: 1, ret: P.Null, args: [,]}, {func: 1, ret: -1, args: [P.Object], opt: [P.StackTrace]}, {func: 1, ret: P.Null, args: [P.String,,]}, {func: 1, args: [, P.String]}, {func: 1, args: [P.String]}, {func: 1, ret: P.Null, args: [{func: 1, ret: -1}]}, {func: 1, ret: P.Null, args: [,], opt: [,]}, {func: 1, ret: [P._Future,,], args: [,]}, {func: 1, ret: P.Null, args: [,,]}, {func: 1, ret: P.Null, args: [P.Symbol0,,]}, {func: 1, args: [,,]}, {func: 1, ret: W.MessageEvent, args: [,]}, {func: 1, ret: P.Null, args: [W.MessageEvent]}];
+  init.metadata = ["_", null, "error", "stackTrace", "result", "index", "closure", "numberOfArguments", "arg1", "arg2", "arg3", "arg4", "event", "callback", "arguments"];
+  init.types = [{func: 1, ret: P.Null}, {func: 1, ret: -1}, {func: 1, ret: P.Null, args: [,]}, {func: 1, ret: -1, args: [,]}, {func: 1, ret: -1, args: [{func: 1, ret: -1}]}, {func: 1, args: [,]}, {func: 1, ret: P.String, args: [P.int]}, {func: 1, ret: P.Null, args: [P.String,,]}, {func: 1, args: [, P.String]}, {func: 1, args: [P.String]}, {func: 1, ret: P.Null, args: [{func: 1, ret: -1}]}, {func: 1, ret: -1, args: [P.Object], opt: [P.StackTrace]}, {func: 1, ret: P.Null, args: [,], opt: [,]}, {func: 1, ret: [P._Future,,], args: [,]}, {func: 1, ret: P.Null, args: [,,]}, {func: 1, ret: P.Null, args: [P.Symbol0,,]}, {func: 1, args: [,,]}];
   function convertToFastObject(properties) {
     function MyClass() {
     }
