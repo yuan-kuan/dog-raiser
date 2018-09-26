@@ -1,6 +1,10 @@
-import 'dart:html';
-
 import 'package:js/js.dart';
+
+@anonymous
+@JS()
+abstract class MessageEvent {
+  external dynamic get data;
+}
 
 @JS('postMessage')
 external void PostMessage(obj);
