@@ -1,6 +1,6 @@
-Purpose : Write the main app and worker code in dart, in the same project.
+Purpose: Write the main app and worker code in dart, in the same project.
 
-Progress : The furthest I reach is the ability to write worker code in dart, onmessage and PostMessage worked, able to pass a custom object from main to worker and back. 
+Progress: The furthest I reach is the ability to write worker code in dart, onmessage and PostMessage worked, able to pass a custom object from main to worker and back. 
 
 Problems:
 
@@ -8,3 +8,8 @@ Problems:
 
 2. dart.html's Worker.onMessage will always massage the return JSObject before passing it through the Stream. I reckon this will waste some CPU cycle and I will not able to cast the MessageEvent.data into the class I wanted directly (this can be done in Worker's code).
 
+Running: 
+
+1, clone this repro.
+2, do a 'pub get'
+3, then 'webdev serve -r'
