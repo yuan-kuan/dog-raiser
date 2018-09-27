@@ -22,7 +22,7 @@ void main() {
   
   onMessage = allowInterop((event) {
     var e = event as MessageEvent;
-    print('worker before cast ${stringify(e)}');
+    print('worker got ${stringify(e.data)}');
     var dog = e.data as Dog;
     print('worker: got ${dog.name} from master, raising it from ${dog.age}...');
 
