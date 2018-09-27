@@ -18,9 +18,11 @@ external void set onMessage(f);
 external String stringify(obj);
 
 void main() {
+  print('Worker created');
+  
   onMessage = allowInterop((event) {
     var e = event as MessageEvent;
-    print('worker before cast ${stringify(e.data)}');
+    print('worker before cast ${stringify(e)}');
     var dog = e.data as Dog;
     print('worker: got ${dog.name} from master, raising it from ${dog.age}...');
 

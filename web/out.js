@@ -2686,6 +2686,7 @@
   }], ["", "excel_reader.dart",, D, {
     "^": "",
     main: function() {
+      P.print("Worker created");
       var t1 = P.allowInterop(new D.main_closure(), {func: 1, ret: P.Null, args: [,]});
       self.onmessage = t1;
     },
@@ -2696,12 +2697,10 @@
     main_closure: {
       "^": "Closure:6;",
       call$1: [function($event) {
-        var t1, t2, dog, olderDog;
+        var dog, t1, t2, olderDog;
         H.interceptedTypeCast($event, "$isMessageEvent");
-        t1 = J.getInterceptor$x($event);
-        t2 = t1.get$data($event);
-        P.print("worker before cast " + H.S(self.JSON.stringify(t2)));
-        dog = H.interceptedTypeCast(t1.get$data($event), "$isDog");
+        P.print("worker before cast " + H.S(self.JSON.stringify($event)));
+        dog = H.interceptedTypeCast(J.get$data$x($event), "$isDog");
         t1 = J.getInterceptor$x(dog);
         P.print("worker: got " + H.S(t1.get$name(dog)) + " from master, raising it from " + H.S(t1.get$age(dog)) + "...");
         t2 = H.S(t1.get$name(dog)) + " 2.0";
@@ -2778,6 +2777,9 @@
     if (receiver instanceof P.Object)
       return receiver;
     return J.getNativeInterceptor(receiver);
+  };
+  J.get$data$x = function(receiver) {
+    return J.getInterceptor$x(receiver).get$data(receiver);
   };
   J.get$iterator$a = function(receiver) {
     return J.getInterceptor$a(receiver).get$iterator(receiver);
